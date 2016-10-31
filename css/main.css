@@ -1,0 +1,73 @@
+body {
+    background-color: rgb(242, 242, 242);
+}
+
+.positive {
+  color: orange;
+}
+
+.negative {
+  color: dodgerBlue;
+}
+
+.like {
+  color: green;
+}
+
+.indif {
+  color: red;
+}
+
+.posts {
+    background-color: rgba(233, 227, 227, 0.81);
+    border: 2px solid rgb(170, 170, 170);
+    border-radius: 2%;
+    margin: 5px;
+    padding: 3px;
+}
+
+.curComVote {
+    font-size: 1.8em;
+}
+
+.postRow {
+  padding: 15px;
+}
+
+.showForm.ng-hide-remove-active {
+  animation: rotateInUpRight 1s;
+}
+
+.showForm.ng-hide {
+  animation: hinge 1s;
+}
+
+.commentForm.ng-hide-remove-active {
+  animation: rotateInUpRight 1s;
+}
+
+.commentForm.ng-hide {
+  animation: hinge 1s;
+}
+
+.commentShow.ng-hide {
+  animation: flipOutX 1s;
+}
+
+.commentShow.ng-hide-remove-active {
+  animation: flipInX 1s;
+}
+
+.postRepeat.ng-move,
+.postRepeat.ng-enter,
+.postRepeat.ng-enter-active {
+  animation: zoomInRight 1s;
+  transition-delay: 0.5s;
+}
+
+.postRepeat.ng-move,
+.postRepeat.ng-leave,
+.postRepeat.ng-leave-active {
+  animation: slideOutLeft 1s;
+  transition-delay: 0.5s;
+}
