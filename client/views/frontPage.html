@@ -1,0 +1,131 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Reddit Clone</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="javascript:void(0)" ng-click="togglePost()">Submit A Post
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" ng-model="view.search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="selectpicker" role="button" aria-haspopup="true" aria-expanded="false">Sort by
+                        <select class="selectpicker" ng-model="order">
+                            <option ng-repeat="by in view.sortBy" value="{{by}}">{{by}}</option>
+                        </select>
+                    </a>
+                </li>
+                <li><a href="/login">Login or Sign up</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<h1>FrontPage</h1>
+<div class="container">
+    <!-- new post -->
+    <form name"newPost" ng-show="view.formShow" ng-submit="addPost(newPost)" class="showForm">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" required id="title" ng-model="newPost.title" placeholder="Post title here">
+        </div>
+        <!-- <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" required id="username" ng-model="newPost.username" placeholder="Your name or username">
+        </div> -->
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="url" class="form-control" required id="image" ng-model="newPost.image" placeholder="Place img url here">
+        </div>
+        <div class="form-group">
+            <label for="content">Description</label>
+            <input type="text" class="form-control" required id="content" ng-model="newPost.content" placeholder="Post content here">
+        </div>
+        <input type="submit" class="btn btn-default" name="submitPost" value="Submit">
+    </form>
+    <div ng-repeat="post in view.posts | orderBy: order : true | filter:view.search" class="postRepeat">
+        <div class="row posts">
+            <div class="col-s-12">
+                <img class="col-xs-3 image-left postImg" src="{{post.image}}" alt=""/>
+                <h3 class="title">{{post.title}}
+                    |
+                    <button type="button" class="btn btn-default" ng-click="changeVote(post, 1)">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="changeVote(post, -1)">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </button>
+                    <span ng-class="{positive: post.votes > 0, negative: post.votes < 0}">{{post.votes}}</span>
+                </h3>
+                <h4 class="text-right">By:
+                    {{post.username}}</h4>
+                <p>{{post.content}}</p>
+                <p class="text-center">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                    {{post.date}}
+                    |
+                    <span>
+                        <a href="javascript:void(0)" ng-click="toggleComment(post)">
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                            <ng-pluralize count="post.comments.length" when="{0: 'No Comments',1: '1 Comment','other':
+                            '{{post.comments.length}} Comments'}"></ng-pluralize>
+                        </a>
+                    </span>
+                    <span>
+                        |<a href="javascript:void(0)" ng-click="toggleNewComment(post)">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Add Comment |
+                        </a>
+                    </span>
+                    <span>
+                        <span class="glyphicon glyphicon-star" ng-click="addFavorite(post)" ng-class="{like: post.favorite === true, indif: post.favorite === false}" aria-hidden="true"></span>Favorites
+                    </span>
+                </p>
+                <div class="commentShow" ng-show="post.commentsVisible">
+                    <div>
+                        <p ng-repeat="comment in post.comments | orderBy: '-votes'">
+                            {{comment.username}}:<span class="pull-right curComVote">
+                                {{comment.votes}}</span>
+                            <button type="button" class="btn btn-default pull-right" ng-click="commentVote(comment, 1)">
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-default pull-right" ng-click="commentVote(comment, -1)">
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                            </button>
+                            <br>{{comment.text}}</p>
+                    </div>
+                </div>
+                <div>
+                    <form name="newCommentForm" ng-submit="addComment(post, newComment)" ng-show="post.newCommentVisible" class="commentForm">
+                        <div class="form-group">
+                            <label for="username">Author</label>
+                            <input name="username" type="text" class="form-control" required ng-model="newComment.username" placeholder="Your name or username">
+                            <input type="text" name="text" class="form-control" required ng-model="newComment.text" placeholder="Your response">
+                            <input type="submit" class="btn btn-default" name="submitComment" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

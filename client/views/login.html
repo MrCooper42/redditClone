@@ -1,0 +1,22 @@
+<div class="row">
+    <div id="signup" class="col-xs-6 col-xs-offset-3">
+        <form name="authForm">
+            <h3>Sign up or Login</h3>
+            <!-- ng class form check this -->
+            <div ng-class="{'has-error':authForm.username.$invalid && authForm.username.$dirty, 'has-success': authForm.username.$valid}" class="form-group">
+                <label class="control-label" for="username">Username</label>
+                <input class="form-control" id="username" ng-model="userObj.username" type="text" name="username" placeholder="Title" required>
+            </div>
+            <div ng-class="{'has-error':authForm.password.$invalid && authForm.password.$dirty, 'has-success': authForm.password.$valid}" class="form-group">
+                <label class=control-label class=control-label for="password">Password</label>
+                <input class="form-control" id="password" ng-model="userObj.password" type="password" name="password" placeholder="Password" required>
+            </div>
+            <button ng-click="signup(userObj)" type="button" class="btn btn-primary btn-lg">
+                Signup
+            </button>
+            <button ng-click="login(userObj)" type="button" class="btn btn-success btn-lg">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
