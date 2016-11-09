@@ -1,8 +1,8 @@
 'use strict';
 
-const app = angular.module('redditClone', ['ngRoute', 'ngAnimate', 'ngCookies'])
+const app = angular.module('redditClone', ['ngRoute', 'ngAnimate', 'ngCookies', 'ngResource'])
 
-app.config(($routeProvider, $locationProvider) => {
+app.config(($routeProvider, $locationProvider, $resourceProvider) => {
 	$routeProvider
 		.when('/', {
 			templateUrl: '../views/frontPage.html',
@@ -13,4 +13,5 @@ app.config(($routeProvider, $locationProvider) => {
 			controller: 'auth'
 		})
 	$locationProvider.html5Mode(true);
+	$resourceProvider.defaults.stripTrailingSlashes = false;
 })

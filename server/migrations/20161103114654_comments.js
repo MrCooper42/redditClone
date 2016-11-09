@@ -10,7 +10,8 @@ exports.up = (knex, Promise) => {
 			.references(`posts.id`)
 			.onDelete(`CASCADE`);
 		table.string(`username`).notNullable();
-		table.string(`content`).notNullable().defaultsTo('');
+		table.string(`content`).notNullable();
+		table.integer(`votes`);
 		table.timestamps(true, true);
 	})
 };

@@ -11,6 +11,41 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 	$scope.favorites = [];
 	$scope.cookies = $cookies.getAll()
 
+	$scope.view.posts = postsService.posts.query({}, () => {
+		$scope.view.posts.comments = [];
+		console.log($scope.view.posts);
+	});
+
+
+	$scope.comments = postsService.comments.query({}, () => {
+		console.log($scope.comments, "sadfasd");
+	});
+
+	const getComments = () => {
+		let postArr = $scope.view.posts
+		let comArr = postsService.comments.query();
+		console.log(comArr, "comArr");
+		for (let i = 0; i < postArr.length; i++) {
+			console.log(postArr[i], "p arr i");
+			postArr[i].comments = [];
+			for (let j = 0; j < comArr.length; j++) {
+				if (postArr[i].id === comArr[j].post_id) {
+					postArr[i].comments.push(comArr[j])
+					j++
+					console.log(j, "j");
+				}
+				i++
+				console.log(i, "i");
+			}
+			return pos
+			console.log(postArr[i].comment, "postcomment");
+		}
+		return postArr
+		console.log(postArr, "postarr");
+	}
+
+	$scope.comments = getComments()
+
 	$scope.$watch('cookies', function() {
 		if ($cookies.getAll().redditSession) {
 			$scope.emit('cookiesDetected')
@@ -22,14 +57,8 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 		$scope.userWelcome = cookieService.decodeCookie($cookies.get('reddredditSession'))
 	})
 
-	postsService.getPosts().then(function(results) {
-		console.log(results);
-		$scope.view.posts = results
-		console.log(results, 'getting results');
-	})
-
 	$scope.addPost = (post) => {
-		postsService.newPost(post).then((results) => {
+		postsService.posts.save(post, (results) => {
 			console.log('results', results);
 			post.date = moment().calendar();
 			post.newCommentVisible = false;
@@ -37,12 +66,9 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 			post.favorite = false;
 			$scope.view.formShow = false;
 			$scope.view.newPost.$setPristine()
+			console.log(post, "post");
 		})
 	};
-
-	// post.votes = 0;
-	// post.comments = [];
-	// $scope.view.posts.push(post);
 
 	$scope.addComment = (post, newComment) => {
 		if (post === post) {

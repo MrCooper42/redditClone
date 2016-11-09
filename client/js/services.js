@@ -1,19 +1,24 @@
-app.service('postsService', function($http) {
+'use strict';
+
+app.service('postsService', function($resource) {
 	return {
-		getPosts: function() {
-			return $http.get('/api/allposts')
-				.then(function(response) {
-					return response.data
-					console.log("getting posts", response.data);
-				})
-		},
-		newPost: function(post) {
-			return $http.post('/api/newpost', post).then(function(response) {
-				return response.data
-			})
-		}
+		posts: $resource('/api/allposts/:id', {
+			id: '@_id'
+		}, {
+			update: {
+				method: `PUT`
+			}
+		}),
+		comments: $resource('/api/comments/:id', {
+			id: '@_id'
+		}, {
+			update: {
+				method: `PUT`
+			}
+		})
 	}
-})
+});
+
 
 app.service('authService', function($http, $location) {
 	return {
@@ -48,4 +53,4 @@ app.service('userService', ($http) => {
 	return {
 		getUser: () => $http.get('/api/userinfo').then((results) => results.data)
 	}
-})
+});

@@ -7,35 +7,18 @@ const bcrypt = require(`bcrypt`);
 // const auth = require(`./auth`);
 
 // /* GET home page. */
-// const ensureAuthenticated = (req, res, next) => {
-// 	if (req.isAutheticated()) {
-// 		return next();
-// 	}
-// 	res.redirect(`/`);
-// }
 
-// router.get(`/`, (req, res, next) => {
-// 	knex(`posts`).then((results) => {
-// 		console.log(results, 'results');
-// 	})
-// })
-
-//	.select()
-
-router.get('/allposts', (req, res, next) => {
+router.get(`/allposts`, (req, res, next) => {
 	knex(`posts`)
 		.join(`users`, `posts.user_id`, `users.id`)
-		.then((results) => {
-			console.log("/allposts results");
-			res.json(results)
-		})
+		.then((results) => res.json(results))
 });
 
-router.post(`/newpost`, (req, res, next) => {
-	console.log(req.session, req.session.userInfo, "sess, sess user info");
-	if (!req.session.userInfo) {} else {
+router.post(`/allposts`, (req, res, next) => {
+	if (!req.session.userInfo) {
+		console.log("log in to post");
+	} else {
 		knex(`posts`)
-			.returning(`*`)
 			.insert({
 				username: req.session.userInfo.username,
 				user_id: req.session.userInfo.id,
@@ -44,7 +27,28 @@ router.post(`/newpost`, (req, res, next) => {
 				image: req.body.image,
 				votes: 1
 			}).then((results) => {
-				res.send(results)
+				res.json(results)
+			})
+	}
+})
+
+router.get(`/comments`, (req, res, next) => {
+	knex(`comments`)
+		.join(`users`, `users.id`, `comments.user_id`)
+		.select([`comments.id`, `users.username`, `post_id`, `content`])
+		.then((results) => {
+			console.log(results, "comment results");
+			res.json(results)
+		})
+})
+
+router.post(`/comments`, (req, res, next) => {
+	if (!req.session.userInfo) {
+		console.log("log in to comment");
+	} else {
+		knex(`comments`)
+			.insert({
+
 			})
 	}
 })
