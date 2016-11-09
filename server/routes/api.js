@@ -7,11 +7,26 @@ const bcrypt = require(`bcrypt`);
 // const auth = require(`./auth`);
 
 // /* GET home page. */
+// .join(`users`, `posts.user_id`, `users.id`)
 
 router.get(`/allposts`, (req, res, next) => {
 	knex(`posts`)
-		.join(`users`, `posts.user_id`, `users.id`)
-		.then((results) => res.json(results))
+		.then((posts) => {
+			knex(`comments`)
+				.then((comments) => {
+					posts.forEach((post) => {
+						post.comments = [];
+						comments.forEach((comment) => {
+							if (comment.post_id == post.id) {
+								post.comments.push(comment)
+							}
+						})
+					})
+					res.json(posts)
+				})
+		}).catch((err) => {
+			return err
+		})
 });
 
 router.post(`/allposts`, (req, res, next) => {
@@ -34,21 +49,33 @@ router.post(`/allposts`, (req, res, next) => {
 
 router.get(`/comments`, (req, res, next) => {
 	knex(`comments`)
+		.join(`posts`, `posts.id`,
+			`comments.post_id`)
 		.join(`users`, `users.id`, `comments.user_id`)
-		.select([`comments.id`, `users.username`, `post_id`, `content`])
 		.then((results) => {
 			console.log(results, "comment results");
 			res.json(results)
 		})
 })
 
+// .select(`comments.id`, `users.username`, `post_id`, `content`)
+
 router.post(`/comments`, (req, res, next) => {
+	console.log("comments post hit");
 	if (!req.session.userInfo) {
 		console.log("log in to comment");
 	} else {
+		console.log('insert should happen', req.session.userInfo.id, req.body.post_id);
 		knex(`comments`)
 			.insert({
-
+				user_id: req.session.userInfo.id,
+				post_id: req.body.post_id,
+				username: req.session.userInfo.username,
+				content: req.body.content,
+				votes: 1
+			})
+			.then((results) => {
+				res.json(results)
 			})
 	}
 })

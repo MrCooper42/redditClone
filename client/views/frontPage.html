@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Reddit Clone</a>
+            <a class="navbar-brand" href="/">Reddit Clone</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -41,7 +41,6 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
-<h1>FrontPage</h1>
 <div class="container">
     <!-- new post -->
     <form name"newPost" ng-show="view.formShow" ng-submit="addPost(newPost)" class="showForm">
@@ -49,10 +48,6 @@
             <label for="title">Title</label>
             <input type="text" class="form-control" required id="title" ng-model="newPost.title" placeholder="Post title here">
         </div>
-        <!-- <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" required id="username" ng-model="newPost.username" placeholder="Your name or username">
-        </div> -->
         <div class="form-group">
             <label for="image">Image</label>
             <input type="url" class="form-control" required id="image" ng-model="newPost.image" placeholder="Place img url here">
@@ -112,15 +107,13 @@
                             <button type="button" class="btn btn-default pull-right" ng-click="commentVote(comment, -1)">
                                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                             </button>
-                            <br>{{comment.text}}</p>
+                            <br>{{comment.content}}</p>
                     </div>
                 </div>
                 <div>
                     <form name="newCommentForm" ng-submit="addComment(post, newComment)" ng-show="post.newCommentVisible" class="commentForm">
                         <div class="form-group">
-                            <label for="username">Author</label>
-                            <input name="username" type="text" class="form-control" required ng-model="newComment.username" placeholder="Your name or username">
-                            <input type="text" name="text" class="form-control" required ng-model="newComment.text" placeholder="Your response">
+                            <input type="text" name="content" class="form-control" required ng-model="newComment.content" placeholder="Your response">
                             <input type="submit" class="btn btn-default" name="submitComment" value="Submit">
                         </div>
                     </form>

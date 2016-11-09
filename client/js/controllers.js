@@ -11,40 +11,7 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 	$scope.favorites = [];
 	$scope.cookies = $cookies.getAll()
 
-	$scope.view.posts = postsService.posts.query({}, () => {
-		$scope.view.posts.comments = [];
-		console.log($scope.view.posts);
-	});
-
-
-	$scope.comments = postsService.comments.query({}, () => {
-		console.log($scope.comments, "sadfasd");
-	});
-
-	const getComments = () => {
-		let postArr = $scope.view.posts
-		let comArr = postsService.comments.query();
-		console.log(comArr, "comArr");
-		for (let i = 0; i < postArr.length; i++) {
-			console.log(postArr[i], "p arr i");
-			postArr[i].comments = [];
-			for (let j = 0; j < comArr.length; j++) {
-				if (postArr[i].id === comArr[j].post_id) {
-					postArr[i].comments.push(comArr[j])
-					j++
-					console.log(j, "j");
-				}
-				i++
-				console.log(i, "i");
-			}
-			return pos
-			console.log(postArr[i].comment, "postcomment");
-		}
-		return postArr
-		console.log(postArr, "postarr");
-	}
-
-	$scope.comments = getComments()
+	$scope.view.posts = postsService.posts.query()
 
 	$scope.$watch('cookies', function() {
 		if ($cookies.getAll().redditSession) {
@@ -66,16 +33,17 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 			post.favorite = false;
 			$scope.view.formShow = false;
 			$scope.view.newPost.$setPristine()
-			console.log(post, "post");
 		})
 	};
 
 	$scope.addComment = (post, newComment) => {
+		console.log(post, "comment post");
+		console.log(newComment, "newcomment post");
 		if (post === post) {
-			newComment.votes = 0;
-			post.comments.push(newComment);
+			newComment.post_id = post.id
+			postsService.comments.save(newComment, (results) => {})
 		} else {
-
+			console.log("you bummed up");
 		};
 		$scope.newComment = {};
 	};
@@ -131,4 +99,4 @@ app.controller('auth', ['$scope', '$cookies', 'authService', function($scope, $c
 	$scope.login = function(userObj) {
 		authService.login(userObj).then(function(response) {})
 	}
-}])
+}]);
