@@ -3,14 +3,14 @@
 app.service('postsService', function($resource) {
 	return {
 		posts: $resource('/api/allposts/:id', {
-			id: '@_id'
+			id: '@id'
 		}, {
 			update: {
 				method: `PUT`
 			}
 		}),
 		comments: $resource('/api/comments/:id', {
-			id: '@_id'
+			id: '@id'
 		}, {
 			update: {
 				method: `PUT`

@@ -29,6 +29,16 @@ router.get(`/allposts`, (req, res, next) => {
 		})
 });
 
+router.put(`/allposts/:id`, (req, res, next) => {
+	knex(`posts`)
+		.where('id', req.body.id)
+		.update({
+			votes: req.body.votes
+		}).then((results) => {
+			res.json(results)
+		})
+})
+
 router.post(`/allposts`, (req, res, next) => {
 	if (!req.session.userInfo) {
 		console.log("log in to post");
@@ -47,17 +57,16 @@ router.post(`/allposts`, (req, res, next) => {
 	}
 })
 
-router.get(`/comments`, (req, res, next) => {
-	knex(`comments`)
-		.join(`posts`, `posts.id`,
-			`comments.post_id`)
-		.join(`users`, `users.id`, `comments.user_id`)
-		.then((results) => {
-			console.log(results, "comment results");
-			res.json(results)
-		})
-})
-
+// router.get(`/comments`, (req, res, next) => {
+// 	knex(`comments`)
+// 		.join(`posts`, `posts.id`,
+// 			`comments.post_id`)
+// 		.join(`users`, `users.id`, `comments.user_id`)
+// 		.then((results) => {
+// 			console.log(results, "comment results");
+// 			res.json(results)
+// 		})
+// })
 // .select(`comments.id`, `users.username`, `post_id`, `content`)
 
 router.post(`/comments`, (req, res, next) => {
@@ -78,6 +87,16 @@ router.post(`/comments`, (req, res, next) => {
 				res.json(results)
 			})
 	}
+})
+
+router.put(`/comments/:id`, (req, res, next) => {
+	knex(`comments`)
+		.where('id', req.body.id)
+		.update({
+			votes: req.body.votes
+		}).then((results) => {
+			res.json(results)
+		})
 })
 
 router.post(`/signup`, (req, res, next) => {

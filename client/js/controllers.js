@@ -69,11 +69,19 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 
 	$scope.changeVote = (post, flag) => {
 		post.votes += flag;
+		postsService.posts.update({
+			id: post.id
+		}, post);
 	};
 
 	$scope.commentVote = (comment, flag) => {
+		console.log(comment);
 		comment.votes += flag;
+		postsService.comments.update({
+			id: comment.id
+		}, comment);
 	};
+
 
 	$scope.addFavorite = (post) => {
 		const index = $scope.favorites.indexOf(post)
