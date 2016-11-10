@@ -7,7 +7,7 @@ app.service('postsService', function($resource) {
 		}, {
 			update: {
 				method: `PUT`
-			}
+			},
 		}),
 		comments: $resource('/api/comments/:id', {
 			id: '@id'

@@ -7,9 +7,9 @@ const bcrypt = require(`bcrypt`);
 // const auth = require(`./auth`);
 
 // /* GET home page. */
-// .join(`users`, `posts.user_id`, `users.id`)
 
 router.get(`/allposts`, (req, res, next) => {
+	console.log(req.session.userInfo, "user info");
 	knex(`posts`)
 		.then((posts) => {
 			knex(`comments`)
@@ -29,16 +29,6 @@ router.get(`/allposts`, (req, res, next) => {
 		})
 });
 
-router.put(`/allposts/:id`, (req, res, next) => {
-	knex(`posts`)
-		.where('id', req.body.id)
-		.update({
-			votes: req.body.votes
-		}).then((results) => {
-			res.json(results)
-		})
-})
-
 router.post(`/allposts`, (req, res, next) => {
 	if (!req.session.userInfo) {
 		console.log("log in to post");
@@ -57,6 +47,46 @@ router.post(`/allposts`, (req, res, next) => {
 	}
 })
 
+router.put(`/allposts/:id`, (req, res, next) => {
+	if (!req.session.userInfo) {
+		console.log("log in to post");
+	} else {
+		knex(`posts`)
+			.where('id', req.body.id)
+			.update({
+				votes: req.body.votes
+			}).then((results) => {
+				res.json(results)
+			})
+	}
+})
+
+router.delete(`/allposts/:id`, (req, res, next) => {
+	if (!req.session.userInfo) {
+		console.log("log in to post");
+	} else {
+		knex(`posts`)
+			.where('id', req.params.id)
+			.del().then((results) => {
+				res.json(results)
+				console.log(results, "results");
+			})
+	}
+})
+
+router.delete(`/comments/:id`, (req, res, next) => {
+	if (!req.session.userInfo) {
+		console.log("log in to post");
+	} else {
+		knex(`comments`)
+			.where('id', req.params.id)
+			.del().then((results) => {
+				res.json(results)
+				console.log(results, "results");
+			})
+	}
+})
+
 // router.get(`/comments`, (req, res, next) => {
 // 	knex(`comments`)
 // 		.join(`posts`, `posts.id`,
@@ -70,11 +100,7 @@ router.post(`/allposts`, (req, res, next) => {
 // .select(`comments.id`, `users.username`, `post_id`, `content`)
 
 router.post(`/comments`, (req, res, next) => {
-	console.log("comments post hit");
-	if (!req.session.userInfo) {
-		console.log("log in to comment");
-	} else {
-		console.log('insert should happen', req.session.userInfo.id, req.body.post_id);
+	if (!req.session.userInfo) {} else {
 		knex(`comments`)
 			.insert({
 				user_id: req.session.userInfo.id,
@@ -90,13 +116,17 @@ router.post(`/comments`, (req, res, next) => {
 })
 
 router.put(`/comments/:id`, (req, res, next) => {
-	knex(`comments`)
-		.where('id', req.body.id)
-		.update({
-			votes: req.body.votes
-		}).then((results) => {
-			res.json(results)
-		})
+	if (!req.session.userInfo) {
+		console.log("log in to post");
+	} else {
+		knex(`comments`)
+			.where('id', req.body.id)
+			.update({
+				votes: req.body.votes
+			}).then((results) => {
+				res.json(results)
+			})
+	}
 })
 
 router.post(`/signup`, (req, res, next) => {

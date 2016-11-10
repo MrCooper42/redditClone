@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieService', function($scope, $cookies, postsService, cookieService) {
+app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService', 'cookieService', function($scope, $cookies, $route, postsService, cookieService) {
 
 	$scope.view = {};
 	$scope.view.formShow = false;
@@ -11,7 +11,11 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 	$scope.favorites = [];
 	$scope.cookies = $cookies.getAll()
 
-	$scope.view.posts = postsService.posts.query()
+	$scope.view.posts = postsService.posts.query({}, (svp) => {
+		for (let i = 0; i < svp.length; i++) {
+			svp[i].date = moment(svp[i].created_at).calendar();
+		}
+	})
 
 	$scope.$watch('cookies', function() {
 		if ($cookies.getAll().redditSession) {
@@ -25,8 +29,8 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 	})
 
 	$scope.addPost = (post) => {
+		console.log(post, "post");
 		postsService.posts.save(post, (results) => {
-			console.log('results', results);
 			post.date = moment().calendar();
 			post.newCommentVisible = false;
 			post.commentsVisible = false;
@@ -34,19 +38,39 @@ app.controller("redditControl", ['$scope', '$cookies', 'postsService', 'cookieSe
 			$scope.view.formShow = false;
 			$scope.view.newPost.$setPristine()
 		})
+		$route.reload();
 	};
 
 	$scope.addComment = (post, newComment) => {
-		console.log(post, "comment post");
-		console.log(newComment, "newcomment post");
 		if (post === post) {
 			newComment.post_id = post.id
-			postsService.comments.save(newComment, (results) => {})
+			postsService.comments.save(newComment, (results) => {
+				post.date = moment().calendar();
+			})
 		} else {
 			console.log("you bummed up");
 		};
 		$scope.newComment = {};
+		$route.reload();
 	};
+
+	$scope.deletePost = (post) => {
+		if (post === post) {
+			postsService.posts.delete({
+				id: post.id
+			})
+			$route.reload();
+		}
+	}
+
+	$scope.deleteComment = (comment) => {
+		if (comment === comment) {
+			postsService.comments.delete({
+				id: comment.id
+			})
+			$route.reload();
+		}
+	}
 
 	$scope.togglePost = () => {
 		$scope.view.formShow = !$scope.view.formShow;
