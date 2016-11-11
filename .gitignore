@@ -1,0 +1,12 @@
+# Environment Variables
+/*.env
+
+# npm cash dir
+.npm
+npm-debug.log
+
+# dependancy dir
+node_modules
+jspm_packages
+
+.DS_Store
