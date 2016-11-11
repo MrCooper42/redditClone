@@ -16,11 +16,23 @@ router.get(`/allposts`, (req, res, next) => {
 				.then((comments) => {
 					posts.forEach((post) => {
 						post.comments = [];
+						if (req.session.userInfo.id === post.user_id) {
+							post.curUser = true
+						} else {
+							post.curUser = false
+						}
 						comments.forEach((comment) => {
 							if (comment.post_id == post.id) {
+								if (req.session.userInfo.id === comment.user_id) {
+									comment.curUser = true
+								} else {
+									post.curUser = false
+								}
+								console.log(comment, "api comment");
 								post.comments.push(comment)
 							}
 						})
+						console.log(post, "api post");
 					})
 					res.json(posts)
 				})

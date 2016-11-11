@@ -74,7 +74,7 @@
                         <span class="glyphicon glyphicon-arrow-down float-right" aria-hidden="true"></span>
                     </button>
                     <span ng-class="{positive: post.votes > 0, negative: post.votes < 0}">{{post.votes}}</span>
-                    <span class="glyphicon glyphicon-remove pull-right" ng-click="deletePost(post)"></span>
+                    <span ng-show="post.curUser" class="glyphicon glyphicon-remove pull-right" ng-click="deletePost(post)"></span>
                 </h3>
                 <h4 class="text-right">By:
                     {{post.username}}</h4>
@@ -111,7 +111,7 @@
                             <button type="button" class="btn btn-default pull-right" ng-click="commentVote(comment, -1)">
                                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                             </button>
-                            <span class="glyphicon glyphicon-remove pull-right" ng-click="deleteComment(comment)"></span>
+                            <span ng-show="comment.curUser" class="glyphicon glyphicon-remove pull-right" ng-click="deleteComment(comment)"></span>
                             <br>{{comment.content}}</p>
                     </div>
                 </div>

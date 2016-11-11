@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService', 'cookieService', function($scope, $cookies, $route, postsService, cookieService) {
+app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService', 'cookieService', 'userService', function($scope, $cookies, $route, postsService, cookieService, userService) {
 
 	$scope.view = {};
 	$scope.view.formShow = false;
@@ -14,6 +14,7 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 	$scope.view.posts = postsService.posts.query({}, (svp) => {
 		for (let i = 0; i < svp.length; i++) {
 			svp[i].date = moment(svp[i].created_at).calendar();
+			console.log(svp[i].curUser);
 		}
 	})
 
@@ -129,6 +130,8 @@ app.controller('auth', ['$scope', '$cookies', 'authService', function($scope, $c
 		authService.signup(userObj).then(function(response) {})
 	}
 	$scope.login = function(userObj) {
-		authService.login(userObj).then(function(response) {})
+		authService.login(userObj).then(function(response) {
+			console.log(response, "user logged in resp cont");
+		})
 	}
 }]);

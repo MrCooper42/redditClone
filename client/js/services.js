@@ -47,10 +47,12 @@ app.service('cookieService', function($cookies, $location) {
 			return username
 		}
 	}
-})
+});
 
-app.service('userService', ($http) => {
+app.service('userService', function($http) {
 	return {
-		getUser: () => $http.get('/api/userinfo').then((results) => results.data)
+		getUser: () => $http.get('/api/userinfo').then(function(results) {
+			console.log(results.data, "results.data")
+		})
 	}
 });
