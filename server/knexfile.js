@@ -11,7 +11,7 @@ module.exports = {
 	},
 	production: {
 		client: `pg`,
-		connection: process.env.HEROKU_POSTGRESQL_PINK_URL,
+		connection: process.env.DATABASE_URL,
 		seeds: {
 			directory: `./seeds`
 		}
