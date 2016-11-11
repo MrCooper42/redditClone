@@ -26,6 +26,9 @@
     },
     "devDependencies": {
         "dotenv": "^2.0.0",
-        "v": "0.0.9"
+        "nodemon": "^1.11.0"
+    },
+    "engines": {
+        "node": "6.3.1"
     }
 }
