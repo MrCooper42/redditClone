@@ -1,29 +1,31 @@
 {
-  "name": "redditClone",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node ./server/bin/www",    "heroku-postbuild": "knex migrate:latest"
-  },
-  "dependencies": {
-    "bcrypt": "^0.8.7",
-    "body-parser": "~1.15.1",
-    "cookie-parser": "~1.4.3",
-    "cookie-session": "^2.0.0-alpha.1",
-    "cookie-sessions": "0.0.2",
-    "debug": "~2.2.0",
-    "express": "~4.13.4",
-    "express-session": "^1.14.2",
-    "hbs": "^4.0.1",
-    "knex": "^0.12.6",
-    "morgan": "~1.7.0",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "pg": "^6.1.0",
-    "serve-favicon": "~2.3.0"
-  },
-  "devDependencies": {
-    "dotenv": "^2.0.0",
-    "v": "0.0.9"
-  }
+    "name": "redditClone",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node ./server/bin/www",
+        "knex": "knex",
+        "heroku-postbuild": "knex migrate:latest"
+    },
+    "dependencies": {
+        "bcrypt": "^0.8.7",
+        "body-parser": "~1.15.1",
+        "cookie-parser": "~1.4.3",
+        "cookie-session": "^2.0.0-alpha.1",
+        "cookie-sessions": "0.0.2",
+        "debug": "~2.2.0",
+        "express": "~4.13.4",
+        "express-session": "^1.14.2",
+        "hbs": "^4.0.1",
+        "knex": "^0.12.6",
+        "morgan": "~1.7.0",
+        "passport": "^0.3.2",
+        "passport-local": "^1.0.0",
+        "pg": "^6.1.0",
+        "serve-favicon": "~2.3.0"
+    },
+    "devDependencies": {
+        "dotenv": "^2.0.0",
+        "v": "0.0.9"
+    }
 }
