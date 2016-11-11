@@ -123,7 +123,9 @@ app.controller('auth', ['$scope', '$cookies', 'authService', function($scope, $c
 	console.log("auth cont");
 	$scope.userObj = {}
 	$scope.signup = function(userObj) {
-		authService.signup(userObj).then(function(response) {})
+		authService.signup(userObj).then(function(response) {
+			console.log(response, "user signed up resp");
+		})
 	}
 	$scope.login = function(userObj) {
 		authService.login(userObj).then(function(response) {
