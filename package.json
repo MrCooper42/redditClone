@@ -5,7 +5,7 @@
     "scripts": {
         "start": "node ./server/bin/www",
         "knex": "knex",
-        "heroku-postbuild": "knex migrate:latest --knexfile"
+        "heroku-postbuild": "knex migrate:latest --knexfile ./server/knexfile.js"
     },
     "dependencies": {
         "bcrypt": "^0.8.7",
