@@ -14,7 +14,6 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 	$scope.view.posts = postsService.posts.query({}, (svp) => {
 		for (let i = 0; i < svp.length; i++) {
 			svp[i].date = moment(svp[i].created_at).calendar();
-			console.log(svp[i].curUser);
 		}
 	})
 
@@ -30,7 +29,6 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 	})
 
 	$scope.addPost = (post) => {
-		console.log(post, "post");
 		postsService.posts.save(post, (results) => {
 			post.date = moment().calendar();
 			post.newCommentVisible = false;
@@ -100,7 +98,6 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 	};
 
 	$scope.commentVote = (comment, flag) => {
-		console.log(comment);
 		comment.votes += flag;
 		postsService.comments.update({
 			id: comment.id
@@ -117,7 +114,6 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 			post.favorite = true;
 			$scope.favorites.push(post);;
 		};
-		console.log($scope.favorites, "favorites");
 	};
 }]);
 

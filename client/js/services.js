@@ -24,7 +24,6 @@ app.service('authService', function($http, $location) {
 	return {
 		signup: function(userObj) {
 			return $http.post('/api/signup', userObj).then(function(response) {
-				console.log(response.data, 'response data');
 				$location.path('/')
 			})
 		},
@@ -51,8 +50,6 @@ app.service('cookieService', function($cookies, $location) {
 
 app.service('userService', function($http) {
 	return {
-		getUser: () => $http.get('/api/userinfo').then(function(results) {
-			console.log(results.data, "results.data")
-		})
+		getUser: () => $http.get('/api/userinfo').then(function(results) {})
 	}
 });

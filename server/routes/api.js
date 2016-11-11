@@ -28,11 +28,9 @@ router.get(`/allposts`, (req, res, next) => {
 								} else {
 									post.curUser = false
 								}
-								console.log(comment, "api comment");
 								post.comments.push(comment)
 							}
 						})
-						console.log(post, "api post");
 					})
 					res.json(posts)
 				})
@@ -74,27 +72,25 @@ router.put(`/allposts/:id`, (req, res, next) => {
 })
 
 router.delete(`/allposts/:id`, (req, res, next) => {
-	if (!req.session.userInfo) {
-		console.log("log in to post");
+	if (req.session.userInfo.id !== req.params.id) {
+		console.log("log in to delete");
 	} else {
 		knex(`posts`)
 			.where('id', req.params.id)
 			.del().then((results) => {
 				res.json(results)
-				console.log(results, "results");
 			})
 	}
 })
 
 router.delete(`/comments/:id`, (req, res, next) => {
-	if (!req.session.userInfo) {
-		console.log("log in to post");
+	if (req.session.userInfo.id !== req.params.id) {
+		console.log("log in to delete");
 	} else {
 		knex(`comments`)
 			.where('id', req.params.id)
 			.del().then((results) => {
 				res.json(results)
-				console.log(results, "results");
 			})
 	}
 })
@@ -112,7 +108,9 @@ router.delete(`/comments/:id`, (req, res, next) => {
 // .select(`comments.id`, `users.username`, `post_id`, `content`)
 
 router.post(`/comments`, (req, res, next) => {
-	if (!req.session.userInfo) {} else {
+	if (!req.session.userInfo) {
+		console.log("log in to comment");
+	} else {
 		knex(`comments`)
 			.insert({
 				user_id: req.session.userInfo.id,
@@ -129,7 +127,7 @@ router.post(`/comments`, (req, res, next) => {
 
 router.put(`/comments/:id`, (req, res, next) => {
 	if (!req.session.userInfo) {
-		console.log("log in to post");
+		console.log("log in to vote");
 	} else {
 		knex(`comments`)
 			.where('id', req.body.id)
