@@ -15,6 +15,8 @@ app.service('postsService', function($resource) {
 			update: {
 				method: `PUT`
 			}
+		}),
+		logout: $resource('/api/logout', null, {
 		})
 	}
 });

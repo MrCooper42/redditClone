@@ -15,6 +15,7 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 		for (let i = 0; i < svp.length; i++) {
 			svp[i].date = moment(svp[i].created_at).calendar();
 		}
+		console.log($scope.cookies, "scope cookeis");
 	})
 
 	$scope.$watch('cookies', function() {
@@ -115,6 +116,11 @@ app.controller("redditControl", ['$scope', '$cookies', '$route', 'postsService',
 			$scope.favorites.push(post);;
 		};
 	};
+
+	$scope.logout = function() {
+		postsService.logout.get()
+		$route.reload();
+	}
 }]);
 
 

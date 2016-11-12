@@ -9,24 +9,23 @@ const bcrypt = require(`bcrypt`);
 // /* GET home page. */
 
 router.get(`/allposts`, (req, res, next) => {
-	console.log(req.session.userInfo, "user info");
 	knex(`posts`)
 		.then((posts) => {
 			knex(`comments`)
 				.then((comments) => {
 					posts.forEach((post) => {
 						post.comments = [];
-						if (req.session.userInfo.id === post.user_id) {
-							post.curUser = true
-						} else {
+						if (!req.session.userInfo) {
 							post.curUser = false
+						} else if (req.session.userInfo.id === post.user_id) {
+							post.curUser = true
 						}
 						comments.forEach((comment) => {
 							if (comment.post_id == post.id) {
-								if (req.session.userInfo.id === comment.user_id) {
+								if (!req.session.userInfo) {
+									comment.curUser = false
+								} else if (req.session.userInfo.id === comment.user_id) {
 									comment.curUser = true
-								} else {
-									post.curUser = false
 								}
 								post.comments.push(comment)
 							}
@@ -84,28 +83,12 @@ router.delete(`/allposts/:id`, (req, res, next) => {
 })
 
 router.delete(`/comments/:id`, (req, res, next) => {
-	if (req.session.userInfo.id !== req.params.id) {
-		console.log("log in to delete");
-	} else {
 		knex(`comments`)
 			.where('id', req.params.id)
 			.del().then((results) => {
 				res.json(results)
 			})
-	}
 })
-
-// router.get(`/comments`, (req, res, next) => {
-// 	knex(`comments`)
-// 		.join(`posts`, `posts.id`,
-// 			`comments.post_id`)
-// 		.join(`users`, `users.id`, `comments.user_id`)
-// 		.then((results) => {
-// 			console.log(results, "comment results");
-// 			res.json(results)
-// 		})
-// })
-// .select(`comments.id`, `users.username`, `post_id`, `content`)
 
 router.post(`/comments`, (req, res, next) => {
 	if (!req.session.userInfo) {
@@ -185,6 +168,12 @@ router.post(`/login`, (req, res, next) => {
 				}
 			}
 		})
+})
+
+router.get(`/logout`, (req, res, next) => {
+	console.log(req.session, "serv side sess");
+	req.session = null;
+	res.sendStatus(200);
 })
 
 module.exports = router;

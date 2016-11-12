@@ -13,5 +13,5 @@ app.config(($routeProvider, $locationProvider, $resourceProvider) => {
 			controller: 'auth'
 		})
 	$locationProvider.html5Mode(true);
-	$resourceProvider.defaults.stripTrailingSlashes = true;
+	$resourceProvider.defaults.stripTrailingSlashes = false;
 })
