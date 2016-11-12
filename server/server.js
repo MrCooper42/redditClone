@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(cookieSession({
 	name: 'redditClone',
-	secret: 'somecrazysessionsecret',
+	secret: process.env.SESSION_KEY,
 	httpOnly: false
 }))
 
